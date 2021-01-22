@@ -1,0 +1,27 @@
+server:
+  port: 10090
+  servlet:
+    context-path: /sam_mgt
+platform:
+  ds:
+    enable: true
+
+audit:
+  open: true
+  async: true
+spring:
+  application:
+    name: sam-mgt-svc
+  profiles:
+    active: local
+  datasource:
+    db1:
+      jdbc-url: jdbc:mysql://106.15.67.50:3306/sam_client_szse?zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver
+    db2:
+      jdbc-url: jdbc:mysql://106.15.67.50:3306/sam_client?zeroDateTimeBehavior=convertToNull&useSSL=false
+      username: root
+      password: root
+      driver-class-name: com.mysql.cj.jdbc.Driver

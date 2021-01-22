@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csf.basedata.sammgt.domain.dao.samclient.ScmProductMapper">
+    <sql id="BASE_TABLE"> node_table </sql>
+    <sql id="ALL_COLUMNS"> id,version_id ,code ,status,level ,source,parent ,ancestors , name AS name_zh,remark as desc_zh,sequence,created_time ,updated_time ,created_by ,updated_by</sql>
+
+    <select id="getScmProductTree" resultType="com.csf.basedata.sammgt.domain.entity.samclient.ScmProduct">
+       select
+       <include refid="ALL_COLUMNS"/>
+       from
+       <include refid="BASE_TABLE"/>
+       where status=1
+    </select>
+
+    <update id="updateProduct">
+        update
+        <include refid="BASE_TABLE"/>
+        <set>
+            <if test="nameZh !=null">
+                name = #{nameZh}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>
+
+
+
+
+

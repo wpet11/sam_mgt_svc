@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>sam_mgt_svc</artifactId>
+        <groupId>com.shuku.sam</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>sam-mgt-dist</artifactId>
+    <name>sam-mgt-dist</name>
+    <properties>
+        <maven.build.timestamp.format>yyyyMMdd'T'24HHmmss</maven.build.timestamp.format>
+        <build.timestamp>${maven.build.timestamp}</build.timestamp>
+
+        <dockerfile-maven.version>1.4.10</dockerfile-maven.version>
+        <!--image config-->
+        <image.server>192.168.250.121:6000</image.server>
+        <image.ns>csf/sam</image.ns>
+        <image.name>sam-mgt-svc-szse</image.name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.shuku.sam</groupId>
+            <artifactId>sam-mgt-svc</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/main/assembly/distribution.xml</descriptor>
+                    </descriptors>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven.version}</version>
+
+                <configuration>
+                    <repository>${image.server}/${image.ns}/${image.name}</repository>
+                    <tag>v${project.version}</tag>
+                    <buildArgs>
+                        <VERSION>${project.version}</VERSION>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>

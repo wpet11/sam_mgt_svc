@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.csf.basedata.sammgt.domain.dao.samclient.ScmAuditMapper">
+    <sql id="BASE_TABLE"> scm_audit </sql>
+    <sql id="ALL_COLUMNS">id, object_id, field_name, before_value, after_value, value_type, created_time ,created_by, operate_type,object_type </sql>
+
+    <insert id="bulkInsert" parameterType="java.util.List">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        (
+        object_id,
+        field_name,
+        before_value,
+        after_value,
+        created_by,
+        operate_type,
+        object_type
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            #{item.objectId},
+            #{item.fieldName},
+            #{item.beforeValue},
+            #{item.afterValue},
+            #{item.createdBy},
+            #{item.operateType},
+            #{item.objectType}
+            )
+        </foreach>
+    </insert>
+
+    <select id="findScmAuditList" resultType="com.csf.basedata.sammgt.domain.entity.samclient.ScmAudit">
+        select before_value, after_value, created_time ,created_by, operate_type, object_id
+        from <include refid="BASE_TABLE"/>
+        where object_type = #{objectType}
+        <if test="startDate != null">
+        <![CDATA[ and created_time > #{startDate}]]>
+        </if>
+        <if test="endDate != null">
+        <![CDATA[ and created_time < #{endDate}]]>
+        </if>
+        <if test="operator != null and operator != ''">
+            and created_by = #{operator}
+        </if>
+        <if test="operationType != null">
+            and operate_type = #{operationType}
+        </if>
+        <if test="list != null and list.size() > 0">
+            and object_id in
+            <foreach item="item" index="index" collection="list" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        order by created_time desc
+        limit #{start},#{pageSize}
+    </select>
+
+</mapper>
+
+
+
+
+
