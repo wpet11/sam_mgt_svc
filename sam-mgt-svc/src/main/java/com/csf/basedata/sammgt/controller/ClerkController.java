@@ -24,6 +24,11 @@ public class ClerkController {
         return ResponseEntity.ok(clerkService.getClerk());
     }
 
+    /**
+     * 修改职员信息
+     * @param Clerk
+     * @return
+     */
     @PutMapping
     public ResponseEntity updateClerk(@RequestBody Clerk Clerk){
         return ResponseEntity.ok(clerkService.updateClerk(Clerk));
